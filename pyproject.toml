@@ -1,0 +1,24 @@
+[project]
+name = "cosmic-python-anuz"
+version = "0.1.0"
+description = "This is a learning project where i read and implement cosmic python concepts. and i'll be creating a branch for each chapter"
+authors = [
+    {name = "anuj",email = "anujb364@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+]
+[tool.poetry]
+packages = [
+    { include = "cosmic_python_anuz", from = "src" }
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "pytest (>=9.1.1,<10.0.0)"
+]
