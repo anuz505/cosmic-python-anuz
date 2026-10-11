@@ -1,7 +1,16 @@
 from datetime import date
 
+from cosmic_python_anuz.exceptions.exception import OutOfStock
 from cosmic_python_anuz.models.value_objects import Orderline
 
+
+def allocate(line: Orderline, batches: list[Batch]) -> str:
+    try:
+        batch = next(b for b in sorted(batches) if b.can_allocate(line))
+        batch.allocate(line)
+        return batch.ref
+    except StopIteration:
+        raise OutOfStock(f"Out of stock bruh {line.sku}")
 
 class Batch:
     def __init__(self, ref_id: str, sku: str, quantity: int, eta: date | None = None):
@@ -14,6 +23,10 @@ class Batch:
     def allocate(self, orderline: Orderline):
         if self.can_allocate(orderline):
             self.allocations.add(orderline)
+
+    def deallocate(self, orderline: Orderline):
+        if orderline in self.allocations:
+            self.allocations.remove(orderline)
 
     def __eq__(self, other):
         if not isinstance(other, Batch):
