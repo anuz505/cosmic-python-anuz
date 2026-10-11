@@ -6,8 +6,12 @@ authors = [
     {name = "anuj",email = "anujb364@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.14"
+
+requires-python = ">=3.14,<4.0"
+
 dependencies = [
+    "loguru (>=0.7.3,<0.8.0)",
+    "pytest (>=9.1.1,<10.0.0)"
 ]
 [tool.poetry]
 packages = [
