@@ -1,3 +1,6 @@
+from sqlalchemy import select
+from sqlalchemy.orm import selectinload
+
 from cosmic_python_anuz.models.entities import Batch
 from cosmic_python_anuz.repositories.repository import AbstractRepository
 
@@ -7,10 +10,14 @@ class PostgreSQLRepository(AbstractRepository):
         self.session = session
 
     async def add(self, batch):
-        await self.session.add(batch)
+        self.session.add(batch)
 
     async def get(self, ref):
-            return await self.session.query(Batch).filter_by(ref=ref).one()
+        smt = select(Batch).options(selectinload(Batch.allocations)).filter_by(ref=ref)
+        result = await self.session.execute(smt)
+        return result.scalar_one()
 
     async def list(self):
-            return await self.session.query(Batch).all()
+        smt = select(Batch).options(selectinload(Batch.allocations))
+        result = await self.session.execute(smt)
+        return list(result.scalars().all())

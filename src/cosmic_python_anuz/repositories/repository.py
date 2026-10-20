@@ -11,3 +11,7 @@ class AbstractRepository(abc.ABC):
     @abc.abstractmethod
     async def get(self, ref) -> entities.Batch:
         pass
+
+    @abc.abstractmethod
+    async def list(self)-> list[entities.Batch]:
+        pass
