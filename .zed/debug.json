@@ -1,0 +1,26 @@
+[
+  {
+    "label": "Python: Uvicorn",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "uvicorn",
+    "args": ["cosmic_python_anuz.entrypoints.app:app", "--port", "8001"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "env": {
+      "PYTHONPATH": "$ZED_WORKTREE_ROOT/src"
+    },
+    "justMyCode": false
+  },
+  {
+    "label": "Python: Pytest",
+    "adapter": "Debugpy",
+    "request": "launch",
+    "module": "pytest",
+    "args": ["tests"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "env": {
+      "PYTHONPATH": "$ZED_WORKTREE_ROOT/src"
+    },
+    "justMyCode": false
+  }
+]
