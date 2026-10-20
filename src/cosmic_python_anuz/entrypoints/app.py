@@ -5,8 +5,7 @@ from starlette.responses import JSONResponse
 from starlette.routing import Route
 
 from cosmic_python_anuz.adapters.orm import metadata, start_mapper
-from cosmic_python_anuz.adapters.sql_repository import PostgreSQLRepository
-from cosmic_python_anuz.config.settings import DEFAULT_SESSION_FACTORY, engine
+from cosmic_python_anuz.config.settings import engine
 from cosmic_python_anuz.exceptions.exception import InvalidSku, OutOfStock
 from cosmic_python_anuz.models.value_objects import Orderline
 from cosmic_python_anuz.services.request_service import AllocateService
@@ -30,10 +29,8 @@ async def allocate_endpoint(request: Request):
         reference_id = body.get("reference_id")
         sku = body.get("sku")
         quantity= body.get("quantity")
-        session = DEFAULT_SESSION_FACTORY()
-        repo = PostgreSQLRepository(session)
         line = Orderline(reference_id=reference_id, sku=sku, quantity=quantity)
-        batch_ref = await AllocateService(line=line, repo=repo, session=session)
+        batch_ref = await AllocateService(line=line)
         return JSONResponse({"batch_ref": batch_ref})
     except HTTPException:
         raise
