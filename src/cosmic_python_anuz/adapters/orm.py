@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship, registry
 from sqlalchemy.orm.properties import ForeignKey
 from sqlalchemy.sql.sqltypes import Integer
 
-from cosmic_python_anuz.models.entities import Batch
+from cosmic_python_anuz.models.entities import Batch, Product
 from cosmic_python_anuz.models.value_objects import Orderline
 
 metadata = MetaData()
@@ -20,13 +20,18 @@ orderlines = Table(
     Column("sku", String(255), nullable=False),
     Column("quantity", Integer, nullable=False)
 )
-
+products = Table(
+    "products",
+    metadata,
+    Column("sku", String(255), primary_key=True),
+    Column("version_number", Integer, nullable=False, server_default="0")
+)
 batches = Table(
     "batches",
     metadata,
     Column("id", UUID, primary_key=True, default=uuid.uuid4),
     Column("ref", String(255), nullable=False),
-    Column("sku", String(255), nullable=False),
+    Column("sku", ForeignKey("products.sku"), nullable=False),
     Column("_purchased_quantity", Integer, nullable=False, default=1),
     Column("eta", Date, nullable=True)
 )
@@ -46,5 +51,12 @@ def start_mapper():
             "allocations": relationship(
                 Orderline, secondary=allocations, collection_class=set
             ),
+        },
+    )
+    mapper_registry.map_imperatively(
+        Product,
+        products,
+        properties={
+            "batches": relationship(Batch),
         },
     )

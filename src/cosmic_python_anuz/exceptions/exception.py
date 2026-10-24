@@ -7,5 +7,9 @@ class OutOfStock(Exception):
     )
 
 
+
+class AllocationNotFound(Exception):
+    logger.error("Invalid Deallocation. This line was never allocated.")
+
 class InvalidSku(Exception):
     logger.error("Invalid SKU. This product is not available.")

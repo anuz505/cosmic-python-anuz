@@ -4,7 +4,7 @@ from cosmic_python_anuz.repositories.repository import AbstractRepository
 
 
 class AbstractUoW(abc.ABC):
-    batches_repo: AbstractRepository
+    products_repo: AbstractRepository
 
     async def __aenter__(self) -> AbstractUoW:
         return self
