@@ -9,7 +9,9 @@ class PostgreSQLUoW(AbstractUoW):
 
     async def __aenter__(self) -> AbstractUoW:
         self.session = self.session_factory()
-        self.products_repo = PostgreSQLRepository(self.session) # batches_repo cause this is a repo instance but in the book batches is written so that the maybe read like a business logic rather than just database.
+        self.products_repo = PostgreSQLRepository(
+            self.session
+        )  # batches_repo cause this is a repo instance but in the book batches is written so that the maybe read like a business logic rather than just database.
         return await super().__aenter__()
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):

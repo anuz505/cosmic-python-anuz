@@ -11,10 +11,3 @@ class AbstractRepository(abc.ABC):
     @abc.abstractmethod
     async def get(self, sku: str) -> entities.Product:
         pass
-<<<<<<< Updated upstream
-=======
-
-    # @abc.abstractmethod
-    # async def list(self)-> list[entities.Batch]:
-    #     pass
->>>>>>> Stashed changes

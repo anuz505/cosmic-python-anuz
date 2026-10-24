@@ -28,8 +28,10 @@ async def init_db():
     async with engine.begin() as conn:
         await conn.run_sync(metadata.create_all)
 
+
 async def home(request: Request):
     return JSONResponse({"message": "Hey i am learning cosmic python."})
+
 
 async def allocate_endpoint(request: Request):
     try:
@@ -38,7 +40,7 @@ async def allocate_endpoint(request: Request):
             raise HTTPException(status_code=400, detail="Something wrong with your payload.")
         reference_id = body.get("reference_id")
         sku = body.get("sku")
-        quantity= body.get("quantity")
+        quantity = body.get("quantity")
         line = Orderline(reference_id=reference_id, sku=sku, quantity=quantity)
         uow = PostgreSQLUoW()
         batch_ref = await AllocateService(line=line, uow=uow)
@@ -50,13 +52,14 @@ async def allocate_endpoint(request: Request):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Something went wrong. Try again lol {e}")
 
+
 async def deallocate_endpoint(request: Request):
     try:
         body = await request.json()
         if not body:
             raise HTTPException(status_code=400, detail="Something wrong with your request.")
         reference_id = body.get("reference_id")
-        sku= body.get("sku")
+        sku = body.get("sku")
         quantity = body.get("quantity")
         line = Orderline(reference_id=reference_id, sku=sku, quantity=quantity)
         uow = PostgreSQLUoW()
@@ -67,11 +70,13 @@ async def deallocate_endpoint(request: Request):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Something went wrong.Try again {e}")
 
+
 routes = [
     Route("/", home, methods=["GET"]),
     Route("/allocate", allocate_endpoint, methods=["POST"]),
-    Route("/deallocate", deallocate_endpoint, methods=["POST"])
+    Route("/deallocate", deallocate_endpoint, methods=["POST"]),
 ]
+
 
 @asynccontextmanager
 async def lifespan(app):
